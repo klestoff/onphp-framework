@@ -1,11 +1,24 @@
-2011-07-20	Evgeny V. Kokovikhin
+2011-09-01	Sergey S. Sergeev
 
-	* core/Cache/Memcached.class.php, core/Cache/PeclMemcached.class.php,
-	core/DB/PgSQL.class.php, global.inc.php.tpl,
-	main/Monitoring/PinbaClient.class.php, main/Monitoring/PinbedMemcached.class.php,
-	main/Monitoring/PinbedPeclMemcached.class.php,
-	main/Monitoring/PinbedPgSQL.class.php: wrapper for pinba added.
-		see http://pinba.org/wiki/Main_Page for details
+	* main/Utils/AMQP/AMQPQueueConsumer.class.php,
+	main/Utils/AMQP/AMQPConsumer.class.php,
+	main/Utils/AMQP/AMQPDefaultConsumer.class.php,
+	main/Utils/AMQP/AMQPChannelInterface.class.php,
+	main/Utils/AMQP/Pecl/AMQPPeclChannel.class.php:
+	consumer logic implemented, phpDoc updated.
+
+	* main/Utils/AMQP/AMQPIncomingMessage.class.php: typo fixed.
+
+2011-08-26	Sergey S. Sergeev
+
+	* main/Utils/AMQP/AMQPChannelInterface.class.php,
+	main/Utils/AMQP/AMQPBaseChannel.class.php, main/Utils/AMQP/AMQP.class.php,
+	main/Utils/AMQP/Pecl/AMQPPeclChannel.class.php,
+	main/Utils/AMQP/Pecl/AMQPPecl.class.php, main/Utils/AMQP/Exceptions:
+	extract AMQPChannelInterface, all channel classes implements
+	AMQPChannelInterface; methods returns an instance of AMQPChannelInterface;
+	throws AMQPServerException, AMQPServerConnectionException if RabbitMQ
+	is down OR connection is not available.
 
 2011-08-18	Evgeny V. Kokovikhin
 
@@ -24,20 +37,12 @@
 
 2011-07-14	Evgeny V. Kokovikhin
 
-<<<<<<< HEAD
-	* core/DB/ImaginaryDialect.class.php: quiting added.
-=======
 	* core/DB/ImaginaryDialect.class.php: quiting added
->>>>>>> onphp-master
 
 2011-07-13 	Evgeny V. Kokovikhin
 
 	* core/DB/Dialect.class.php, core/DB/PgSQL.class.php,
-<<<<<<< HEAD
-	core/DB/PostgresDialect.class.php, core/Form/Primitive.class.php,
-=======
 	core/DB/PostgresDialect.class.php, core/Form/Primitive.class.php
->>>>>>> onphp-master
 	core/Form/Primitives/BaseObjectPrimitive.class.php,
 	core/Form/Primitives/PrimitiveIpAddress.class.php,
 	core/Form/Primitives/PrimitiveIpRange.class.php,
