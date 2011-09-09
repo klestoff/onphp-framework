@@ -35,29 +35,20 @@
 			
 		public function getImageUrl(HttpRequest $request)
 		{
-			$timeStamp = time();
 			$domainName =
 				$request->hasServerVar('SERVER_NAME')
 					? $request->getServerVar('SERVER_NAME')
 					: '';
 			
-			// Get the referrer from the utmr parameter, this is the referrer to the
-			// page that contains the tracking pixel, not the referrer for tracking
-			// pixel.
 			$documentReferer =
 				$request->hasServerVar('HTTP_REFERER')
-					? urlencode($request->getServerVar('HTTP_REFERER'))
+					? $request->getServerVar('HTTP_REFERER')
 					: '-';
 			
 			$documentPath =
 				$request->hasServerVar('REQUEST_URI')
-					? urlencode($request->getServerVar('REQUEST_URI'))
+					? $request->getServerVar('REQUEST_URI')
 					: '-';
-			
-			$userAgent =
-				$request->hasServerVar("HTTP_USER_AGENT")
-					? $request->getServerVar("HTTP_USER_AGENT")
-					: '';
 			
 			// Construct the gif hit url.
 			$utmUrl =
