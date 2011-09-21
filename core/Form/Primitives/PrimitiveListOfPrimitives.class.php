@@ -1,8 +1,17 @@
 <?php
+/***************************************************************************
+ *   Copyright (C) 2011 by Alexander A. Klestov                            *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Lesser General Public License as        *
+ *   published by the Free Software Foundation; either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
+ *                                                                         *
+ ***************************************************************************/
+
 	/**
-	 * @author Alexander Klestov <a.klestov@co.wapstart.ru>
-	 * @copyright Copyright (c) 2011, Wapstart
-	 */
+	 * @ingroup Primitives
+	**/
 	final class PrimitiveListOfPrimitives extends BasePrimitive
 	{
 		/**
