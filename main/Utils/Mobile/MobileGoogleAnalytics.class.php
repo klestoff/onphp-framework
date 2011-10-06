@@ -143,9 +143,11 @@
 							: null,
 					"header" => (
 						"Accepts-Language: "
-						.$request->hasServerVar('HTTP_ACCEPT_LANGUAGE')
-							? $request->getServerVar('HTTP_ACCEPT_LANGUAGE')
-							: null
+						.(
+							$request->hasServerVar('HTTP_ACCEPT_LANGUAGE')
+								? $request->getServerVar('HTTP_ACCEPT_LANGUAGE')
+								: null
+						)
 					)
 				)
 			);
