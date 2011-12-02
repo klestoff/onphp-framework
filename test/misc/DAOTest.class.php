@@ -44,6 +44,71 @@
 			$this->drop();
 		}
 		
+		public function testBoolean()
+		{
+			$this->create();
+			
+			foreach (DBTestPool::me()->getPool() as $connector => $db) {
+				DBPool::me()->setDefault($db);
+				
+				//creating moscow
+				$moscow = TestCity::create()->setName('Moscow');
+				$moscow = $moscow->dao()->add($moscow);
+				$moscowId = $moscow->getId();
+				/* @var $moscow TestCity */
+				
+				//now moscow capital
+				$moscow->dao()->merge($moscow->setCapital(true));
+				TestCity::dao()->dropIdentityMap();
+				
+				Criteria::create(TestCity::dao())->
+					setSilent(false)->
+					add(Expression::isTrue('capital'))->
+					get();
+				TestCity::dao()->dropIdentityMap();
+				
+				$moscow = Criteria::create(TestCity::dao())->
+					setSilent(false)->
+					add(Expression::isNull('large'))->
+					get();
+				TestCity::dao()->dropIdentityMap();
+				
+				//now moscow large
+				$moscow = $moscow->dao()->merge($moscow->setLarge(true));
+				
+				TestCity::dao()->dropIdentityMap();
+				$moscow = TestCity::dao()->getById($moscowId);
+				$this->assertTrue($moscow->getCapital());
+				$this->assertTrue($moscow->getLarge());
+				
+				Criteria::create(TestCity::dao())->
+					setSilent(false)->
+					add(Expression::not(Expression::isFalse('large')))->
+					get();
+				TestCity::dao()->dropIdentityMap();
+			}
+			
+			$this->drop();
+		}
+		
+		public function testCriteria()
+		{
+			$this->create();
+			
+			foreach (DBTestPool::me()->getPool() as $connector => $db) {
+				DBPool::me()->setDefault($db);
+				$this->fill();
+				
+				$this->criteriaResult();
+				
+				Cache::me()->clean();
+			}
+			
+			$this->deletedCount();
+			
+			$this->drop();
+		}
+		
 		public function testUnified()
 		{
 			$this->create();
@@ -256,6 +321,12 @@
 				$this->getListByIdsTest();
 				$this->getListByIdsTest();
 			}
+		}
+		
+		public function criteriaResult()
+		{
+			$queryResult = Criteria::create(TestCity::dao())->getResult();
+			$this->assertEquals(2, $queryResult->getCount());
 		}
 		
 		public function unified()
@@ -751,6 +822,30 @@
 				getList();
 			
 			$this->assertEquals(count($list), 2);
+			
+			$this->drop();
+		}
+		
+		public function testLazy()
+		{
+			$this->create();
+			
+			$parent = TestParentObject::create();
+			$child = TestChildObject::create()->setParent($parent);
+			
+			$parent->dao()->add($parent);
+			
+			$child->dao()->add($child);
+			
+			$this->assertEquals(
+				$parent->getId(),
+				Criteria::create(TestChildObject::dao())->
+					setProjection(
+						Projection::property('parent.id', 'parentId')
+					)->
+					add(Expression::eq('id', $child->getId()))->
+					getCustom('parentId')
+			);
 			
 			$this->drop();
 		}

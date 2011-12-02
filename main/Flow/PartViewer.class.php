@@ -57,6 +57,18 @@
 			return $this;
 		}
 		
+		public function toString($partName, $model = null)
+		{
+			try {
+				ob_start();
+				$this->view($partName, $model);
+				return ob_get_clean();
+			} catch (Exception $e) {
+				ob_end_clean();
+				throw $e;
+			}
+		}
+		
 		public function partExists($partName)
 		{
 			return $this->viewResolver->viewExists($partName);

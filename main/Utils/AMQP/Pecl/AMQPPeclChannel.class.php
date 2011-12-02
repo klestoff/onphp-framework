@@ -317,7 +317,7 @@
 			$this->unsetExchange($name);
 
 			return $this;
-		}		
+		}
 
 		/**
 		 * @throws AMQPServerException|AMQPServerConnectionException
@@ -485,11 +485,12 @@
 			}
 
 			$this->checkCommandResult(
-				is_array($messages),
+				is_array($messages) && !empty($messages),
 				"Could not consume from queue"
 			);
 
 			$message = array_shift($messages);
+
 			$incoming = AMQPIncomingMessage::spawn($message);
 
 			if ($this->consumer->getConsumerTag() === null) {
@@ -499,7 +500,10 @@
 				$this->consumer->getConsumerTag()
 				!= $incoming->getConsumerTag()
 			) {
-				throw new WrongStateException('Consumer change tag');
+				$this->consumer->handleChangeConsumerTag(
+					$this->consumer->getConsumerTag(),
+					$incoming->getConsumerTag()
+				);
 			}
 
 			$this->consumer->handleDelivery($incoming);
